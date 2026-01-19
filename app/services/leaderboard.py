@@ -62,4 +62,11 @@ def get_leaderboard_df() -> pd.DataFrame:
 
         rows = session.exec(stmt).all()
 
-    return pd.DataFrame(rows)
+    df = pd.DataFrame(rows)
+    df_sorted = (
+        df.sort_values(by=["Siege", "Tore", "Gegentore"], ascending=[False, False, True]).reset_index(drop=True)
+    )
+    df_sorted.index = df_sorted.index + 1
+    df_sorted.index.name = "Platz"
+
+    return df_sorted
