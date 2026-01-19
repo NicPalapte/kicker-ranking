@@ -57,4 +57,9 @@ if st.button("Match speichern"):
 
 st.header("Leaderboard")
 leaderboard_df = get_leaderboard_df()
-st.dataframe(leaderboard_df)
+df_sorted = (
+    leaderboard_df.sort_values("Siege", ascending=False).reset_index(drop=True)
+)
+df_sorted.index = df_sorted.index + 1
+df_sorted.index.name = "Platz"
+st.dataframe(df_sorted)
