@@ -1,6 +1,6 @@
 import streamlit as st
 from db.database import get_session
-from services.player_service import create_player
+from services.player_service import create_player, get_all_players
 
 st.set_page_config(page_title="Spieler anlegen", page_icon="🖊")
 
@@ -17,6 +17,7 @@ if st.button("Spieler erstellen"):
             if player is None:
                 st.error("Ein Spieler mit diesem Namen existiert bereits.")
             else:
+                get_all_players.clear()
                 st.success(f"Spieler {player_name} {player_surname} wurde erstellt!")
     else:
         st.error("Bitte sowohl Vorname als auch Nachname eingeben.")

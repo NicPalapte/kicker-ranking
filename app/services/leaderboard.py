@@ -1,10 +1,12 @@
 import pandas as pd
-from sqlmodel import Session, select
+from sqlmodel import select
 from sqlalchemy.sql import func, case
 from db.database import get_session
+from streamlit import cache_data
 
 from db.models import Player, MatchPlayer, Matches, TeamEnum
 
+@cache_data(ttl=60)
 def get_leaderboard_df() -> pd.DataFrame:
     with get_session() as session:
 

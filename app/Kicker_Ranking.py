@@ -9,23 +9,15 @@ from services.leaderboard import get_leaderboard_df
 def initialize_database():
     init_db()
 
-@st.cache_data
-def load_players():
-    return get_all_players()
 
-@st.cache_data(ttl=60)
-def load_leaderboard():
-    return get_leaderboard_df()
-
-
-initialize_database()
+#initialize_database()
 st.set_page_config(page_title="Kicker Ranking", page_icon="🏆")
 
 # Streamlit UI 
 st.title("Kicker Ranking")
 st.write("Bitte trage hier den Matchergebnis ein. Wenn dein Spieler noch nicht existiert, kannst du ihn unter 'Spieler anlegen' erstellen.")
 
-players = load_players()
+players = get_all_players()
 
 team_black = st.multiselect(
     "Spieler Team Schwarz",
@@ -60,9 +52,9 @@ if st.button("Match speichern"):
         team_schwarz_ids=[p.id for p in team_black],
         team_grau_ids=[p.id for p in team_grey],
     )
-
+    get_leaderboard_df.clear()
     st.success("Match gespeichert")
 
 st.header("Leaderboard")
-leaderboard_df = load_leaderboard()
+leaderboard_df = get_leaderboard_df()
 st.dataframe(leaderboard_df)
