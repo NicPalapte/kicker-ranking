@@ -55,7 +55,7 @@ def get_leaderboard_df() -> pd.DataFrame:
             select(
                 Player.name.label("Vorname"),
                 Player.surname.label("Nachname"),
-                games_played.label("Spiele"),
+                games_played.label("_Spiele"), #interne Spalte 
                 func.sum(wins).label("Siege"),
                 func.sum(goals_for).label("Tore"),
                 func.sum(goals_against).label("Gegentore"),
@@ -73,7 +73,9 @@ def get_leaderboard_df() -> pd.DataFrame:
     # -----------------------------
     # Gewinnrate berechnen
     # -----------------------------
-    df["Gewinnrate [%]"] = (df["Siege"] / df["Spiele"] * 100).round(1)
+    df["Gewinnrate [%]"] = (df["Siege"] / df["_Spiele"] * 100).round(1)
+
+    df = df.drop(columns=["_Spiele"])
     
     df_sorted = (
         df.sort_values(by=["Siege","Gewinnrate [%]", "Tore", "Gegentore"], ascending=[False, False, False, True]).reset_index(drop=True)
