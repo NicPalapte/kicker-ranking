@@ -73,10 +73,10 @@ def get_leaderboard_df() -> pd.DataFrame:
     # -----------------------------
     # Gewinnrate berechnen
     # -----------------------------
-    df["Gewinnrate"] = (df["Siege"] / df["Spiele"] * 100).round(1)
+    df["Gewinnrate [%]"] = (df["Siege"] / df["Spiele"] * 100).round(1)
     
     df_sorted = (
-        df.sort_values(by=["Siege","Gewinnrate", "Tore", "Gegentore"], ascending=[False, False, False, True]).reset_index(drop=True)
+        df.sort_values(by=["Siege","Gewinnrate [%]", "Tore", "Gegentore"], ascending=[False, False, False, True]).reset_index(drop=True)
     )
     df_sorted.index = df_sorted.index + 1
     df_sorted.index.name = "Platz"
