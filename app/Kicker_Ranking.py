@@ -15,7 +15,7 @@ st.set_page_config(page_title="Kicker Ranking", page_icon="🏆")
 
 # Streamlit UI 
 st.title("Kicker Ranking")
-st.write("Bitte trage hier den Matchergebnis ein. Wenn dein Spieler noch nicht existiert, kannst du ihn unter 'Spieler anlegen' erstellen.")
+st.write("Bitte trage hier das Matchergebnis ein. Wenn dein Spieler noch nicht existiert, kannst du ihn unter 'Spieler anlegen' erstellen.")
 
 players = get_all_players()
 
@@ -56,5 +56,6 @@ if st.button("Match speichern"):
     st.success("Match gespeichert")
 
 st.header("Leaderboard")
+st.write("Das Leaderboard wird nach am meisten Siegen, höchste Gewinnrate, am meisten Tore und am wenigsten Gegentore sortiert")
 leaderboard_df = get_leaderboard_df()
 st.dataframe(leaderboard_df)
