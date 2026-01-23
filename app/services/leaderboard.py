@@ -42,6 +42,11 @@ def get_leaderboard_df() -> pd.DataFrame:
             ),
             else_=0,
         )
+        # -----------------------------
+        # Spiel gezählt (immer 1)
+        # -----------------------------
+
+        games_played = func.count(Matches.id)
 
         # -----------------------------
         # SQLModel Select
@@ -50,6 +55,7 @@ def get_leaderboard_df() -> pd.DataFrame:
             select(
                 Player.name.label("Vorname"),
                 Player.surname.label("Nachname"),
+                games_played.label("Spiele"),
                 func.sum(wins).label("Siege"),
                 func.sum(goals_for).label("Tore"),
                 func.sum(goals_against).label("Gegentore"),
@@ -63,10 +69,18 @@ def get_leaderboard_df() -> pd.DataFrame:
         rows = session.exec(stmt).all()
 
     df = pd.DataFrame(rows)
+
+    # -----------------------------
+    # Gewinnrate berechnen
+    # -----------------------------
+    df["Gewinnrate"] = (df["Siege"] / df["Spiele"] * 100).round(1)
+    
     df_sorted = (
-        df.sort_values(by=["Siege", "Tore", "Gegentore"], ascending=[False, False, True]).reset_index(drop=True)
+        df.sort_values(by=["Siege","Gewinnrate", "Tore", "Gegentore"], ascending=[False, False, False, True]).reset_index(drop=True)
     )
     df_sorted.index = df_sorted.index + 1
     df_sorted.index.name = "Platz"
+
+
 
     return df_sorted
