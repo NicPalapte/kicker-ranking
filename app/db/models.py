@@ -9,6 +9,7 @@ def utc_now():
     return datetime.now(timezone.utc)
 
 class Player(SQLModel, table=True):
+    __table_args__ = {"extend_existing": True}
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     name: str
     surname: str
